@@ -1,7 +1,7 @@
 import pandas as pd
 import inspect
 
-from prototype_python_library.calculations.logger import Logger
+from prototype_python_library.utils.logger import Logger
 
 
 class LogisticCost:
