@@ -4,12 +4,16 @@ This library is implemented for educational purposes
 
 Library modules:
  - Calculations 
+ - Connectors
  - Forecasts 
  - Optimizers 
  - Utilities
 
 **Calculations**  
 This module is designed to perform calculations with always deterministic results in accordance with the formulas
+
+**Connectors**  
+This section contains connectors and data converters from various remote systems (1C, SAP, Cropio, etc.)
 
 **Forecasts**  
 This module is designed to perform forecasts using data science technologies (linear models, gradient boosting, 
