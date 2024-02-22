@@ -29,7 +29,7 @@ class LogisticCost:
         else:
             self.log_file = log_file
 
-        self.logger = Logger(name_log=f'Logger for {self.__class__.__name__}',
+        self.logger = Logger(log_name=f'Logger for {self.__class__.__name__}',
                              log_to_console=self.log_to_console,
                              log_to_file=self.log_to_file,
                              log_from_custom=self.log_from_custom,
