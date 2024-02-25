@@ -13,6 +13,9 @@ class Logger:
                  log_path: str = None,
                  log_file: str = None):
 
+        self.verify_flag(log_to_console, 'log_to_console')
+        self.verify_flag(log_to_file, 'log_to_file')
+        self.verify_flag(log_from_custom, 'log_from_custom')
         self.__log_to_console = log_to_console
         self.__log_to_file = log_to_file
         self.__log_from_custom = log_from_custom
@@ -80,6 +83,11 @@ class Logger:
     @logging.setter
     def logging(self, new_logging):
         self.__logging = new_logging
+
+    @classmethod
+    def verify_flag(cls, flag_value, flag_name):
+        if type(flag_value) != bool:
+            raise TypeError(f'{flag_name} must be bool')
 
     def create_logger(self):
 
