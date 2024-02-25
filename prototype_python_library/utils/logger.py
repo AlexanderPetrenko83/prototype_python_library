@@ -13,40 +13,81 @@ class Logger:
                  log_path: str = None,
                  log_file: str = None):
 
-        self.log_to_console = log_to_console
-        self.log_to_file = log_to_file
-        self.log_from_custom = log_from_custom
+        self.verify_flag(log_to_console, 'log_to_console')
+        self.verify_flag(log_to_file, 'log_to_file')
+        self.verify_flag(log_from_custom, 'log_from_custom')
+        self.__log_to_console = log_to_console
+        self.__log_to_file = log_to_file
+        self.__log_from_custom = log_from_custom
 
         if log_to_console or log_to_file or log_from_custom:
             if log_name is None:
-                self.log_name = 'logger'
+                self.__log_name = 'logger'
             else:
-                self.log_name = log_name
+                self.__log_name = log_name
         else:
-            self.log_name = log_name
+            self.__log_name = log_name
 
         if self.log_to_file:
             if log_path is None:
-                self.log_path = 'logs/'
+                self.__log_path = 'logs/'
             else:
-                self.log_path = log_path
+                self.__log_path = log_path
         else:
-            self.log_path = log_path
-        self.log_file = log_file
+            self.__log_path = log_path
+        self.__log_file = log_file
 
-        self.logging = None
+        self.__logging = None
+        self.create_logger()
 
     def __repr__(self):
 
         return (
             f'{self.__class__.__name__}('
-            f'log_to_console={self.log_to_console}, '
-            f'log_to_file={self.log_to_file}, '
-            f'log_from_custom={self.log_from_custom}, '
-            f'log_name={self.log_name}, '
-            f'log_path={self.log_path}, '
-            f'log_file={self.log_file})'
+            f'log_to_console={self.__log_to_console}, '
+            f'log_to_file={self.__log_to_file}, '
+            f'log_from_custom={self.__log_from_custom}, '
+            f'log_name={self.__log_name}, '
+            f'log_path={self.__log_path}, '
+            f'log_file={self.__log_file})'
         )
+
+    @property
+    def log_to_console(self):
+        return self.__log_to_console
+
+    @property
+    def log_to_file(self):
+        return self.__log_to_file
+
+    @property
+    def log_from_custom(self):
+        return self.__log_from_custom
+
+    @property
+    def log_name(self):
+        return self.__log_name
+
+    @property
+    def log_path(self):
+        return self.__log_path
+
+    @property
+    def log_file(self):
+        return self.__log_file
+
+    @property
+    def logging(self):
+        return self.__logging
+
+    @logging.setter
+    def logging(self, new_logging):
+        self.__logging = new_logging
+
+    @classmethod
+    def verify_flag(cls, flag_value, flag_name):
+        if type(flag_value) != bool:
+            raise TypeError(f'{flag_name} must be bool')
 
     def create_logger(self):
 

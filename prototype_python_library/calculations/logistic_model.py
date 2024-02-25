@@ -35,7 +35,6 @@ class LogisticCost:
                              log_from_custom=self.log_from_custom,
                              log_path=self.log_path,
                              log_file=self.log_file)
-        self.logger.create_logger()
 
         if self.log_to_console:
             self.logger.info(f"Initialize {self.__class__.__name__}")

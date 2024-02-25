@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='check-the-possibilities',
-    version='0.0.16',
+    version='0.0.17',
     author='alexander_petrenko',
     author_email='gd@reseco.ru',
     description='PPL - Python Prototype Library',
