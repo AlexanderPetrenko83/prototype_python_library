@@ -4,9 +4,13 @@ import inspect
 from prototype_python_library.utils.logger import Logger
 
 
-class LogisticCost:
+def show__to_console():
+    print(inspect)
+
+
+class LogisticModel:
     """
-    Class representing a calculating of logistic cost
+    Class representing
 
     """
 
@@ -20,6 +24,7 @@ class LogisticCost:
         self.log_to_console = log_to_console
         self.log_to_file = log_to_file
         self.log_from_custom = log_from_custom
+
         self.log_path = log_path
         if self.log_to_file:
             if log_file is None:
@@ -29,16 +34,18 @@ class LogisticCost:
         else:
             self.log_file = log_file
 
-        self.logger = Logger(log_name=f'Logger for {self.__class__.__name__}',
-                             log_to_console=self.log_to_console,
-                             log_to_file=self.log_to_file,
-                             log_from_custom=self.log_from_custom,
-                             log_path=self.log_path,
-                             log_file=self.log_file)
+        self.logger = Logger(
+            log_to_console=self.log_to_console,
+            log_to_file=self.log_to_file,
+            log_from_custom=self.log_from_custom,
+            log_name=f'Logger for {self.__class__.__name__}',
+            log_path=self.log_path,
+            log_file=self.log_file
+        )
 
         if self.log_to_console:
-            self.logger.info(f"Initialize {self.__class__.__name__}")
-            self.logger.info(self.__repr__())
+            self.logger.info(f"Object initialization of class: {self.__class__.__name__}")
+            self.logger.info(f'Object created: {self.__repr__()}')
 
     def __repr__(self):
 
@@ -51,17 +58,9 @@ class LogisticCost:
             f'log_file={self.log_file})'
         )
 
-    @property
-    def fullname(self):
-        return (f'{self.log_to_console} '
-                f'{self.log_to_file} '
-                f'{self.log_from_custom} '
-                f'{self.log_path} '
-                f'{self.log_file}')
-
-    def prepare_tariffs(self,
-                        df_tariffs: pd.DataFrame,
-                        tariff_data_source: str = 'custom') -> pd.DataFrame:
+    def tariffs(self,
+                df_tariffs: pd.DataFrame,
+                tariff_data_source: str = 'custom') -> pd.DataFrame:
         """
 
         :param tariff_data_source: User has options choosing source of tariffs:
@@ -100,10 +99,10 @@ class LogisticCost:
 
         return df_tariffs
 
-    def get_logistic_cost(self,
-                          df_matrix_of_distances: pd.DataFrame,
-                          df_tariffs: pd.DataFrame,
-                          df_field_to_region: pd.DataFrame) -> pd.DataFrame:
+    def logistic_cost(self,
+                      df_matrix_of_distances: pd.DataFrame,
+                      df_tariffs: pd.DataFrame,
+                      df_field_to_region: pd.DataFrame) -> pd.DataFrame:
         """
 
         :param df_field_to_region: Dataframe

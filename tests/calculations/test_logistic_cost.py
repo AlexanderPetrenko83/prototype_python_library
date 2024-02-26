@@ -7,12 +7,12 @@ python_path = os.path.join(os.getcwd())
 sys.path.append(python_path)
 os.environ["PYTHONPATH"] = python_path
 
-from prototype_python_library.calculations.logistic_model import LogisticCost
+from prototype_python_library.calculations.logistic_model import LogisticModel
 
 
 @pytest.fixture
 def init_logistic_cost():
-    return LogisticCost()
+    return LogisticModel()
 
 
 df_field_to_region = pd.read_csv('tests/data/field_to_region.csv').drop('Unnamed: 0', axis=1)
@@ -24,7 +24,7 @@ df_matrix_distance = pd.read_csv('tests/data/matrix_distance.csv').drop('Unnamed
 
 def test_type_logistic_cost(init_logistic_cost):
     logistic = init_logistic_cost
-    assert logistic.__class__.__name__ == 'LogisticCost'
+    assert logistic.__class__.__name__ == 'LogisticModel'
 
 
 def test_attributes_logistic_cost(init_logistic_cost):
@@ -46,13 +46,13 @@ def test_methods_logistic_cost(init_logistic_cost):
 
     methods = [method_name for method_name in dir(logistic) if callable(getattr(logistic, method_name))]
 
-    assert 'prepare_tariffs' in methods
-    assert 'get_logistic_cost' in methods
+    assert 'tariffs' in methods
+    assert 'logistic_cost' in methods
 
 
-def test_prepare_tariffs(init_logistic_cost):
+def test_tariffs(init_logistic_cost):
     logistic = init_logistic_cost
-    df = logistic.prepare_tariffs(df_logistic_rates)
+    df = logistic.tariffs(df_logistic_rates)
 
     assert sorted(df.columns.tolist()) == sorted(df_logistic_rates_prepared.columns.tolist())
     assert df.dtypes.apply(lambda x: x.name).to_dict() == \
@@ -60,16 +60,18 @@ def test_prepare_tariffs(init_logistic_cost):
     assert df.shape[0] == df_logistic_rates_prepared.shape[0]
     assert df['region'].values.tolist() == df_logistic_rates_prepared['region'].values.tolist()
     assert df['logistic_rate'].values.tolist() == df_logistic_rates_prepared['logistic_rate'].values.tolist()
-    assert df['lower_limit_rate_km'].values.tolist() == df_logistic_rates_prepared['lower_limit_rate_km'].values.tolist()
-    assert df['upper_limit_rate_km'].values.tolist() == df_logistic_rates_prepared['upper_limit_rate_km'].values.tolist()
+    assert df['lower_limit_rate_km'].values.tolist() == df_logistic_rates_prepared[
+        'lower_limit_rate_km'].values.tolist()
+    assert df['upper_limit_rate_km'].values.tolist() == df_logistic_rates_prepared[
+        'upper_limit_rate_km'].values.tolist()
     assert df['unit'].values.tolist() == df_logistic_rates_prepared['unit'].values.tolist()
 
 
-def test_prepare_logistic_cost(init_logistic_cost):
+def test_logistic_cost(init_logistic_cost):
     logistic = init_logistic_cost
-    df = logistic.get_logistic_cost(df_matrix_distance,
-                                    df_logistic_rates_prepared,
-                                    df_field_to_region)
+    df = logistic.logistic_cost(df_matrix_distance,
+                                df_logistic_rates_prepared,
+                                df_field_to_region)
 
     assert sorted(df.columns.tolist()) == sorted(df_logistic_cost.columns.tolist())
     assert df.dtypes.apply(lambda x: x.name).to_dict() == \
@@ -82,7 +84,3 @@ def test_prepare_logistic_cost(init_logistic_cost):
     assert df['logistic_rate'].values.tolist() == df_logistic_cost['logistic_rate'].values.tolist()
     assert list(map(int, df['logistic_tariff_by_tn'].values.tolist())) == \
            list(map(int, df_logistic_cost['logistic_tariff_by_tn'].values.tolist()))
-
-
-
-

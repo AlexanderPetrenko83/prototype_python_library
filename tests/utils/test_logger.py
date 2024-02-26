@@ -26,10 +26,10 @@ def test_default_attributes_logger(init_logger):
     attributes = {
         '_Logger__log_to_console': True,
         '_Logger__log_to_file': False,
-        '_Logger__log_name': 'logger',
+        '_Logger__log_from_custom': False,
+        '_Logger__log_name': 'MathOptLogger',
         '_Logger__log_path': None,
-        '_Logger__log_file': None,
-        '_Logger__log_from_custom': False
+        '_Logger__log_file': None
         }
 
     logger_attributes = logger.__dict__.copy()
@@ -44,10 +44,14 @@ def test_methods_logger(init_logger):
     methods = [method_name for method_name in dir(logger) if callable(getattr(logger, method_name))]
 
     assert 'info' in methods
+    assert 'info_run_module' in methods
+    assert 'info_complete_module' in methods
+    assert 'info_download_parameters' in methods
+    assert 'info_checking_the_directory' in methods
 
 
 def test_create_folder_for_logger():
-    logger = Logger(log_name='test_logger', log_to_file=True, log_path=None)
+    _ = Logger(log_name='test_logger', log_to_file=True, log_path=None)
 
     directories = [name for name in os.listdir(".") if os.path.isdir(name)]
 
