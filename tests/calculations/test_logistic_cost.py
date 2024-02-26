@@ -30,11 +30,11 @@ def test_type_logistic_cost(init_logistic_cost):
 def test_attributes_logistic_cost(init_logistic_cost):
     logistic = init_logistic_cost
     attributes = [
-        'log_to_console',
-        'log_to_file',
-        'log_from_custom',
-        'log_path',
-        'log_file',
+        '_LogisticModel__log_to_console',
+        '_LogisticModel__log_to_file',
+        '_LogisticModel__log_from_custom',
+        '_LogisticModel__log_path',
+        '_LogisticModel__log_file',
         'logger'
     ]
 
