@@ -30,11 +30,11 @@ def test_type_logistic_cost(init_logistic_cost):
 def test_attributes_logistic_cost(init_logistic_cost):
     logistic = init_logistic_cost
     attributes = [
-        '_LogisticModel__log_to_console',
-        '_LogisticModel__log_to_file',
-        '_LogisticModel__log_from_custom',
-        '_LogisticModel__log_path',
-        '_LogisticModel__log_file',
+        'log_file',
+        'log_from_custom',
+        'log_path',
+        'log_to_file',
+        'log_to_stream',
         'logger'
     ]
 
@@ -48,6 +48,7 @@ def test_methods_logistic_cost(init_logistic_cost):
 
     assert 'tariffs' in methods
     assert 'logistic_cost' in methods
+    assert 'init_logger' in methods
 
 
 def test_tariffs(init_logistic_cost):

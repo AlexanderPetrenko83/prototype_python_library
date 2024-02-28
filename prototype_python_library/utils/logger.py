@@ -2,23 +2,32 @@ import logging
 
 from pathlib import Path
 from time import gmtime, strftime
+from typing import Optional
 
 
 class Logger:
     """
-    Logger class
+
+    The class creates a logger. The class pre-provides logger settings, which simplifies the use of the logger.
+
+    :param log_to_stream: If True, logs will be output to the console. Defaults to True.
+    :param log_to_file: If True, logs will be output to the file. Defaults to False.
+    :param log_from_custom: In developing.
+    :param log_name: Name to the logger. Defaults to 'MathOptLogger'.
+    :param log_path: Path to the log file. Defaults to None.
+    :param log_file: Name of the log file. Defaults to None.
 
 
     """
     def __init__(self,
-                 log_to_console: bool = True,
+                 log_to_stream: bool = True,
                  log_to_file: bool = False,
                  log_from_custom: bool = False,
-                 log_name: str = None,
-                 log_path: str = None,
-                 log_file: str = None):
+                 log_name: Optional[str] = 'MathOptLogger',
+                 log_path: Optional[str] = None,
+                 log_file: Optional[str] = None) -> None:
 
-        bool_variables = {'log_to_console': log_to_console,
+        bool_variables = {'log_to_stream': log_to_stream,
                           'log_to_file': log_to_file,
                           'log_from_custom': log_from_custom}
 
@@ -30,98 +39,61 @@ class Logger:
             self.verify_flag(value, key)
 
         for key, value in string_variables.items():
-            self.verify_str_or_none(value, key)
+            if value is not None:
+                self.verify_str(value, key)
 
-        self.__log_to_console = log_to_console
-        self.__log_to_file = log_to_file
-        self.__log_from_custom = log_from_custom
+        self.log_to_stream = log_to_stream
+        self.log_to_file = log_to_file
+        self.log_from_custom = log_from_custom
 
-        if log_to_console or log_to_file or log_from_custom:
-            if log_name is None:
-                self.__log_name = 'MathOptLogger'
-            else:
-                self.__log_name = log_name
-        else:
-            self.__log_name = log_name
+        self.log_name = log_name
 
         if self.log_to_file:
             if log_path is None:
-                self.__log_path = 'logs/'
+                self.log_path = 'logs/'
             else:
-                self.__log_path = log_path
+                self.log_path = log_path
 
             if log_file is None:
-                self.__log_file = self.__log_name
+                self.log_file = self.log_name
             else:
-                self.__log_file = log_file
+                self.log_file = log_file
         else:
-            self.__log_path = log_path
-            self.__log_file = log_file
+            self.log_path = log_path
+            self.log_file = log_file
 
-        self.__logging = None
+        self.logging = None
         self.create_logger()
 
     def __repr__(self):
 
         return (
             f'{self.__class__.__name__}('
-            f'log_to_console={self.__log_to_console}, '
-            f'log_to_file={self.__log_to_file}, '
-            f'log_from_custom={self.__log_from_custom}, '
-            f'log_name={self.__log_name}, '
-            f'log_path={self.__log_path}, '
-            f'log_file={self.__log_file})'
+            f'log_to_stream={self.log_to_stream}, '
+            f'log_to_file={self.log_to_file}, '
+            f'log_from_custom={self.log_from_custom}, '
+            f'log_name={self.log_name}, '
+            f'log_path={self.log_path}, '
+            f'log_file={self.log_file})'
         )
-
-    @property
-    def log_to_console(self):
-        return self.__log_to_console
-
-    @property
-    def log_to_file(self):
-        return self.__log_to_file
-
-    @property
-    def log_from_custom(self):
-        return self.__log_from_custom
-
-    @property
-    def log_name(self):
-        return self.__log_name
-
-    @property
-    def log_path(self):
-        return self.__log_path
-
-    @property
-    def log_file(self):
-        return self.__log_file
-
-    @property
-    def logging(self):
-        return self.__logging
-
-    @logging.setter
-    def logging(self, new_logging):
-        self.__logging = new_logging
 
     @classmethod
     def verify_flag(cls, flag_value, flag_name):
-        if type(flag_value) != bool:
+        if type(flag_value) is not bool:
             raise TypeError(f'{flag_name} must be bool, not {type(flag_name)}')
 
     @classmethod
     def verify_str(cls, string_value, string_name):
-        if type(string_value) != str:
+        if type(string_value) is not str:
             raise TypeError(f'{string_name} must be string, not {type(string_value)}')
 
-    @classmethod
-    def verify_str_or_none(cls, string_value, string_name):
-        if type(string_value) != str and string_value is not None:
-            raise TypeError(f'{string_name} must be string or None, not {type(string_value)}')
-
     def create_logger(self,
-                      show_output: bool = False):
+                      show_output: bool = False) -> None:
+        """
+        The method creates a logger.
+        :param show_output: If it is True, the logger will print to console a message "Logger created". Default is False.
+        :return: None
+        """
 
         time_now = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 

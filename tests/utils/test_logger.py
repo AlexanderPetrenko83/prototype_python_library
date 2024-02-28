@@ -24,16 +24,16 @@ def test_default_attributes_logger(init_logger):
     logger = init_logger
 
     attributes = {
-        '_Logger__log_to_console': True,
-        '_Logger__log_to_file': False,
-        '_Logger__log_from_custom': False,
-        '_Logger__log_name': 'MathOptLogger',
-        '_Logger__log_path': None,
-        '_Logger__log_file': None
+        'log_to_stream': True,
+        'log_to_file': False,
+        'log_from_custom': False,
+        'log_name': 'MathOptLogger',
+        'log_path': None,
+        'log_file': None
         }
 
     logger_attributes = logger.__dict__.copy()
-    logger_attributes.pop('_Logger__logging')
+    logger_attributes.pop('logging')
 
     assert logger_attributes == attributes
 
